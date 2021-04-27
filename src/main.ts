@@ -129,8 +129,7 @@ export async function run(): Promise<void> {
       TemplateURL: templateUrl,
       Tags: tags,
       EnableTerminationProtection: terminationProtections,
-      StackPolicyBody: policyBody,
-      StackPolicyURL: policyUrl
+      StackPolicyBody: policyBody
     }
 
     if (parameterOverrides) {
