@@ -30,6 +30,7 @@ const clientConfiguration = {
 }
 
 export async function run(): Promise<void> {
+  core.debug('TESTING 123')
   try {
     const cfn = new aws.CloudFormation({ ...clientConfiguration })
     const { GITHUB_WORKSPACE = __dirname } = process.env
