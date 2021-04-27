@@ -160,7 +160,7 @@ export async function deployStack(
   // } else if (params.StackPolicyURL) {
   // 	updateParams['StackPolicyURL'] = params.StackPolicyURL;
   // }
-
+  core.debug(JSON.stringify(updateParams))
   return await updateStack(
     cfn,
     stack,
