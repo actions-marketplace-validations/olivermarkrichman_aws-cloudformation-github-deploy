@@ -138,27 +138,33 @@ export async function deployStack(
 
     return stack.StackId
   }
+  const updateParams = {
+    ChangeSetName: `${params.StackName}-CS`,
+    ...{
+      StackName: params.StackName,
+      TemplateBody: params.TemplateBody,
+      TemplateURL: params.TemplateURL,
+      Parameters: params.Parameters,
+      Capabilities: params.Capabilities,
+      ResourceTypes: params.ResourceTypes,
+      RoleARN: params.RoleARN,
+      RollbackConfiguration: params.RollbackConfiguration,
+      NotificationARNs: params.NotificationARNs,
+      Tags: params.Tags,
+      StackPolicyBody: params.StackPolicyBody
+    }
+  }
+
+  // if (params.StackPolicyBody) {
+  // 	updateParams['StackPolicyBody'] = params.StackPolicyBody;
+  // } else if (params.StackPolicyURL) {
+  // 	updateParams['StackPolicyURL'] = params.StackPolicyURL;
+  // }
 
   return await updateStack(
     cfn,
     stack,
-    {
-      ChangeSetName: `${params.StackName}-CS`,
-      ...{
-        StackName: params.StackName,
-        TemplateBody: params.TemplateBody,
-        TemplateURL: params.TemplateURL,
-        Parameters: params.Parameters,
-        Capabilities: params.Capabilities,
-        ResourceTypes: params.ResourceTypes,
-        RoleARN: params.RoleARN,
-        RollbackConfiguration: params.RollbackConfiguration,
-        NotificationARNs: params.NotificationARNs,
-        Tags: params.Tags,
-        StackPolicyBody: params.StackPolicyBody,
-        StackPolicyURL: params.StackPolicyURL
-      }
-    },
+    updateParams,
     noEmptyChangeSet,
     noExecuteChageSet,
     noDeleteFailedChangeSet
