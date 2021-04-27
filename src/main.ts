@@ -82,6 +82,8 @@ export async function run(): Promise<void> {
       required: false
     })
 
+    const policy = core.getInput('policy', { required: false })
+
     // Setup CloudFormation Stack
     let templateBody
     let templateUrl
@@ -97,6 +99,23 @@ export async function run(): Promise<void> {
       templateBody = fs.readFileSync(templateFilePath, 'utf8')
     }
 
+    // Setup CloudFormation Stack
+    let policyBody
+    let policyUrl
+
+    if (policy) {
+      if (isUrl(policy)) {
+        core.debug('Using CloudFormation Stack Policy from Amazon S3 Bucket')
+        policyUrl = policy
+      } else {
+        core.debug('Loading CloudFormation Stack Policy')
+        const policyFilePath = path.isAbsolute(policy)
+          ? policy
+          : path.join(GITHUB_WORKSPACE, policy)
+        policyBody = fs.readFileSync(policyFilePath, 'utf8')
+      }
+    }
+
     // CloudFormation Stack Parameter for the creation or update
     const params: CreateStackInput = {
       StackName: stackName,
@@ -108,7 +127,9 @@ export async function run(): Promise<void> {
       TemplateBody: templateBody,
       TemplateURL: templateUrl,
       Tags: tags,
-      EnableTerminationProtection: terminationProtections
+      EnableTerminationProtection: terminationProtections,
+      StackPolicyBody: policyBody,
+      StackPolicyURL: policyUrl
     }
 
     if (parameterOverrides) {

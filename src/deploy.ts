@@ -154,7 +154,9 @@ export async function deployStack(
         RoleARN: params.RoleARN,
         RollbackConfiguration: params.RollbackConfiguration,
         NotificationARNs: params.NotificationARNs,
-        Tags: params.Tags
+        Tags: params.Tags,
+        StackPolicyBody: params.StackPolicyBody,
+        StackPolicyURL: params.StackPolicyURL
       }
     },
     noEmptyChangeSet,
