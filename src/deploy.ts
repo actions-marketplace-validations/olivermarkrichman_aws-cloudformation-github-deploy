@@ -59,7 +59,7 @@ export async function updateStack(
   noDeleteFailedChangeSet: boolean
 ): Promise<string | undefined> {
   core.debug('Creating CloudFormation Change Set')
-  core.debug(JSON.stringify(params))
+  core.debug(Object.keys(params).join(', '))
   await cfn.createChangeSet(params).promise()
 
   try {
